@@ -1,0 +1,37 @@
+//	Mixins sui margini
+//	==================
+
+//	Mixins che operano su tutti i margini
+//	=====================================
+
+//	Setta i 4 margini al valore passato
+@mixin margins($spacing: $i-spazio-verticale) { margin: $spacing; }
+
+//	Setta ciascun margine
+@mixin margin($margini){
+  @include coordinate($margini, 'margin');
+}
+
+//	Mixins che operano su margin-top e margin-bottom
+//	================================================
+
+//	Setta margin-top e margin-bottom al valore $spacing
+@mixin margin-v($spacing: $i-spazio-verticale) { margin: { top: $spacing; bottom: $spacing; } }
+
+//	Resetta margin-top e margin-bottom a zero
+@mixin margin-v-reset { margin: { top: 0; bottom: 0; } }
+
+//	Mixins che operano su margin-left e margin-right
+//	================================================
+
+//	Setta margin-left e margin-right al valore di $spacing
+@mixin margin-o($spacing: $i-spazio-orizzontale) { margin: { left: $spacing; right: $spacing; } }
+
+//	Setta margim-left e margin-right negativi
+@mixin margin-o-neg($spacing: $i-spazio-orizzontale) { margin: { left: -$spacing; right: -$spacing; } }
+
+//	Setta margin-left e margin-right ad auto
+@mixin margin-o-auto { margin: { left: auto; right: auto; } }
+
+//	Imposta a zero margin-left e margin-right
+@mixin margin-o-reset { margin: { left: 0; right: 0; } }

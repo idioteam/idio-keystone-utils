@@ -1,0 +1,392 @@
+//	Mixins per forme geometriche in css
+//	===================================
+
+//	https://codepen.io/ricardozea/pen/vqckl?editors=1100
+//	http://hugogiraudel.com/2013/02/18/sass-mixin-star/
+//	https://www.ueppy.com/news/fogli-di-stile/figure-css-base-rettangolo-quadrato-cerchio-ovale-triangolo-e-poligoni.html
+//	https://www.ueppy.com/news/fogli-di-stile/figure-css-avanzate-stelle-mezzaluna-cono-e-pacman.html
+//	https://www.ueppy.com/news/fogli-di-stile/figure-css-speciali-fumetto-cuore-infinito-e-altre-forme-complesse.html
+
+//	Triangoli
+//	=========
+@mixin css-triangle($color, $direction, $size: 6px, $position: absolute, $round: false){
+  @include pseudo($pos: $position);
+  width: 0;
+  height: 0;
+
+  @if $round {
+	border-radius: 3px;
+  }
+
+  @if $direction == down {
+	border-left: $size solid transparent;
+	border-right: $size solid transparent;
+	border-top: $size solid $color;
+	margin-top: 0 - round( $size / 2.5 );
+  } @else if $direction == up {
+	border-left: $size solid transparent;
+	border-right: $size solid transparent;
+	border-bottom: $size solid $color;
+	margin-bottom: 0 - round( $size / 2.5 );
+  } @else if $direction == right {
+	border-top: $size solid transparent;
+	border-bottom: $size solid transparent;
+	border-left: $size solid $color;
+	margin-right: -$size;
+  } @else if  $direction == left {
+	border-top: $size solid transparent;
+	border-bottom: $size solid transparent;
+	border-right: $size solid $color;
+	margin-left: -$size;
+  }
+}
+
+@mixin triangle($direction, $size, $color) {
+  width: 0;
+  height: 0;
+
+  @if $direction == 'up' {
+	border-right: $size solid transparent;
+	border-bottom: $size * 1.732 solid $color;
+	border-left: $size solid transparent;
+  } @else if $direction == 'down' {
+	border-top: $size * 1.732 solid $color;
+	border-right: $size solid transparent;
+	border-left: $size solid transparent;
+  } @else if $direction == 'left' {
+	border-top: $size solid transparent;
+	border-right: $size * 1.732 solid $color;
+	border-bottom: $size solid transparent;
+  } @else if $direction == 'right' {
+	border-top: $size solid transparent;
+	border-bottom: $size solid transparent;
+	border-left: $size * 1.732 solid $color;
+  }
+}
+
+//	Triangoli rettangoli
+@mixin corner-triangle($corner, $size, $color) {
+  width: 0;
+  height: 0;
+
+  @if $corner == 'top-left' {
+	border-top: $size solid $color;
+	border-right: $size solid transparent;
+  } @else if $corner == 'top-right' {
+	border-top: $size solid $color;
+	border-left: $size solid transparent;
+  } @else if $corner == 'bottom-left' {
+	border-right: $size solid transparent;
+	border-bottom: $size solid $color;
+  } @else if $corner == 'bottom-right' {
+	border-bottom: $size solid $color;
+	border-left: $size solid transparent;
+  }
+}
+
+//	Quadrilateri
+//	============
+
+//	Rettangolo
+@mixin rectangle($width, $height){
+  width: $width;
+  height: $height;
+};
+
+//	Quadrato
+@mixin square($size){
+  @include rectangle($size, $size);
+}
+
+//	Parallelogramma
+@mixin parallelogram($width, $height, $skew) {
+  @include rectangle($width, $height);
+  transform: skew($skew);
+}
+
+//	Trapezio
+@mixin trapezoid($width, $color) {
+  width: $width;
+  height: 0;
+  border-right: $width / 2 solid transparent;
+  border-bottom: $width solid $color;
+  border-left: $width / 2 solid transparent;
+  box-sizing: content-box; //If you have 'box-sizing:border-box' the trapezoid doesn't work.
+}
+
+//	Rombo
+@mixin rombo($diagonaleMaggiore, $angoloDiBase, $sfondo) {
+  width:$diagonaleMaggiore;
+  height:$diagonaleMaggiore;
+  -moz-transform:rotate(45deg) skew($angoloDiBase, $angoloDiBase);
+  -webkit-transform:rotate(45deg) skew($angoloDiBase, $angoloDiBase);
+  -ms-transform:rotate(45deg) skew($angoloDiBase, $angoloDiBase);
+  -o-transform:rotate(45deg) skew($angoloDiBase, $angoloDiBase);
+  transform:rotate(45deg) skew($angoloDiBase, $angoloDiBase);
+  background:$sfondo;
+}
+
+//	Poligoni
+//	========
+
+// Pentagono
+// fa schifo
+//@mixin pentagon($size, $color){
+//  position: relative;
+//  width: $size;
+//  border-width: (25/27)*$size (1/3)*$size 0;
+//  border-style: solid;
+//  border-color: $color transparent;
+//  box-sizing: content-box;
+//  
+//  &:before {
+//	content: "";
+//	position: absolute;
+//	height: 0;
+//	width: 0;
+//	top: (-17.22/11)*$size;
+//	left: (-1/3)*$size;
+//	border-width: 0 (5/6)*$size (35/54)*$size;
+//	border-style: solid;
+//	border-color: transparent transparent $color;
+//  }
+//}
+@mixin pentagon($lato, $sfondo, $rotazione) {
+  position:relative;
+  width:$lato;
+  border-top:round($lato*0.951) solid $sfondo;
+  border-left:round($lato*0.309) solid transparent;
+  border-right:round($lato*0.309) solid transparent;
+  -moz-transform:rotate($rotazione);
+  -webkit-transform:rotate($rotazione);
+  -ms-transform:rotate($rotazione);
+  -o-transform:rotate($rotazione);
+  transform:rotate($rotazione);
+  box-sizing: content-box;
+  &:before {
+	content:"";
+	width:0;
+	height:0;
+	position:absolute;
+	top:round($lato*-1.639);
+	left:round($lato*-0.309);
+	border-left:round($lato*0.809) solid transparent;
+	border-right:round($lato*0.809) solid transparent;
+	border-bottom:round($lato*0.688) solid $sfondo;
+  }
+}
+//	Esagono
+@mixin hexagon($width, $colore){
+  
+  $margine: $width / 3.47;
+  
+  position: relative;
+  width: $width;
+  height: $width / 1.73;
+  background-color: $colore;
+  margin: $margine 0;
+
+  &:before, &:after {
+	content: "";
+	position: absolute;
+	width: 0;
+	border-left: $width / 2 solid transparent;
+	border-right: $width / 2 solid transparent;
+  }
+
+  &:before {
+	bottom: 100%;
+	border-bottom: $margine solid $colore;
+  }
+
+  &:after {
+	top: 100%;
+	width: 0;
+	border-top: $margine solid $colore;
+  }
+
+}
+
+//	Cerchi
+//	======
+
+//	Tondo
+@mixin circle($size) {
+  @include square($size);
+  border-radius: $size / 2;
+}
+
+//	Ovale
+@mixin oval($width, $height) {
+  width: $width;
+  height: $height;
+  border-radius: #{$width} / #{$height};
+}
+
+
+//	Forme varie
+//	===========
+
+//	Chevron
+@mixin chevron($direction, $width, $height, $skew, $color) {
+  position: relative;
+  width: $width;
+  height: $height;
+  &:before, &:after {
+	position: absolute;
+	top: 0;
+	width: 50%;
+	height: 100%;
+	background: $color;
+	content: '';
+  }
+  &:before {
+	left: 0;
+	transform: skew(0deg, $skew);
+  }
+  &:after {
+	right: 0;
+	transform: skew(0deg, -$skew);
+  }
+}
+
+//	Barra con estremità triangolari <===>
+@mixin ribbon($width, $height, $color){
+  height: $height;
+  padding: 0 $width;
+  background: $color;
+  font-size: $height / 2;
+  display: inline-block;
+  position: relative;
+  line-height: 1.8;
+
+  &:before, &:after {
+	position: absolute;
+	content: "";
+	height: 0;
+	width: 0;
+	top: 0;
+	border-top: $height / 2 solid transparent;
+	border-bottom: $height / 2  solid transparent;
+	transform:rotateY(180deg);
+  }
+  &:before {
+	left: 100%;
+	border-right: $height / 2 solid $color;
+  }
+  &:after {
+	right: 100%;
+	border-left: $height / 2 solid $color;
+  }
+}
+
+
+//	Cuore
+@mixin heart($width: 50px, $color: hotpink) {
+  $half: ($width / 2);
+  $height: ($half * 1.6);
+
+  display: inline-block;
+  position: relative;
+  width: $width;
+  height: $height;
+
+  &::before,
+  &::after {
+	position: absolute;
+	content: "";
+	left: $half;
+	top: 0;
+	width: $half;
+	height: $height;
+	background: $color;
+	@include border-radius($half $half 0 0);
+	@include transform(rotate(-45deg));
+	@include transform-origin(0 100%);
+  }
+
+  &::after {
+	left: 0;
+	@include transform(rotate(45deg));
+	@include transform-origin(100% 100%);
+  }
+}
+
+//	Frecce (triangoli schiacciati)
+@mixin arrow($direction, $size,  $color){
+  display: block;
+  height: 0;
+  width: 0;
+
+  @if $direction == 'top' {
+	border-left: $size solid transparent;
+	border-right: $size solid transparent;
+	border-bottom: $size solid $color;
+  } @else if $direction == 'right' {
+	border-top: $size solid transparent;
+	border-bottom: $size solid transparent;
+	border-left: $size solid $color;
+  } @else if $direction == 'bottom' {
+	border-top: $size solid $color;
+	border-right: $size solid transparent;
+	border-left: $size solid transparent;
+  } @else if $direction == 'left' {
+	border-top: $size solid transparent;
+	border-right: $size solid $color;
+	border-bottom: $size solid transparent;
+  } @else if $direction == 'top-left' {
+	border-top: $size solid $color;
+	border-right: $size solid transparent;
+  } @else if $direction == 'top-right' {
+	border-top: $size solid $color;
+	border-left: $size solid transparent;
+  } @else if $direction == 'bottom-left' {
+	border-bottom: $size solid $color;
+	border-right: $size solid transparent;
+  } @else if $direction == 'bottom-right' {
+	border-bottom: $size solid $color;
+	border-left: $size solid transparent;
+  }
+}
+
+//	Stella
+@mixin star(
+  $size: 100px, // 2x this value is the width of the star
+  $color: blueviolet,
+  $denominator: 1.42 // Play with this val at different sizes
+) {
+  border-color: $color transparent transparent transparent;
+  border-style: solid;
+  border-top-width: $size / $denominator;
+  border-right-width: $size;
+  border-left-width: $size;
+  height: 0;
+  margin-top: $size / $denominator;
+  margin-bottom: $size / ($denominator * 1.55555555);
+  position: relative;
+  width: 0;
+
+  &:before,
+  &:after {
+	border-color: $color transparent transparent transparent;
+	border-style: solid;
+	border-top-width: $size / $denominator;
+	border-right-width: $size;
+	border-left-width: $size;
+	content: '';
+	display: block;
+	height: 0;
+	left: -$size;
+	position: absolute;
+	top: -$size / $denominator;
+	width: 0;
+  }
+
+  &:before {
+	transform: rotate(70deg);
+  }
+
+  &:after {
+	transform: rotate(-70deg);
+  }
+}

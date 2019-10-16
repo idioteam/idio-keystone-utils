@@ -1,0 +1,32 @@
+//	Mixins sui padding
+//	==================
+
+//	Mixins che operano su tutti i padding
+//	=====================================
+
+//	Setta il padding sui 4 lati al valore passato
+@mixin paddings($spacing: $i-spazio-verticale) { padding: $spacing; }
+
+//	Setta ciascun padding
+@mixin padding($padding){
+  @include coordinate($padding, 'padding');
+}
+
+//	Mixins che operano su padding-top e padding-bottom
+//	==================================================
+
+//	Setta padding-top e padding-bottom al valore di $spacing
+@mixin padding-v($spacing: $i-spazio-verticale) { padding: { top: $spacing; bottom: $spacing; } }
+
+//	Resetta padding-top e padding-bottom a zero
+@mixin padding-v-reset { padding: { top: 0; bottom: 0; } }
+
+
+//	Mixins che operano su padding-left e padding-right
+//	==================================================
+
+//	Setta padding-left e padding-rihgt al valore di $spacing
+@mixin padding-o($spacing: $i-spazio-orizzontale) { padding: { left: $spacing; right: $spacing; } }
+
+//	Resetta padding-left e padding-bottom a 0
+@mixin padding-o-reset { padding: { left: 0; right: 0; } }

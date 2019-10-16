@@ -1,0 +1,98 @@
+//
+//Ci potranno essere altre variabili prima
+//
+
+//	Cartella immagini
+$i-img-path:'/images/';
+
+//------------------------------------------
+//	
+//	Font
+//	
+//
+
+//	Font-size
+$i-font-size: $font-size-base; //bs;
+
+//	Line-height
+$i-line-height: 1.5;
+$i-lh-x-small: 1.1;
+$i-lh-small: 1.25;
+$i-lh-large: 1.75;
+
+//	Font family
+$i-font-family: $font-family-sans-serif;	//bs
+
+//	Font family per titoli
+$i-heading-font-family: $i-font-family;
+
+//	Font weight
+$i-fw-light: 300;
+$i-fw-normal: 400;
+$i-fw-semibold: 600;
+$i-fw-bold: 700;
+$i-fw-heavy: 800;
+
+//------------------------------------------
+//	
+//	Colori
+//	
+//
+
+//	Colori brand
+$i-colore-principale: #338ad8;
+$i-colore-secondario: #CCC;
+
+//	Scala di grigio
+$i-nero: #1a1a1a;
+$i-grigio-scuro: #444;
+$i-grigio: #888;
+$i-grigio-chiaro: #ddd;
+$i-grigio-x-chiaro: #F6F6F6;
+$i-bianco: #fff;
+
+//	Colori notifica
+$i-colore-errore: $brand-success;	//bs
+$i-colore-conferma: $brand-danger;	//bs
+
+//	Colori elementi principali
+$i-colore-body-bg: $body-bg;		//bs
+$i-colore-body-colour: $text-color;	//bs
+$i-colore-link: $link-color;		//bs
+$i-colore-link-hover: $link-hover-color;	//bs
+
+//	Colori social
+$i-colore-twitter: #55acee;
+$i-colore-facebook: #3b5998;
+$i-colore-youtube: #bb0000;
+$i-colore-pinterest: #cb2027;
+$i-colore-linkedin: #007bb5;
+$i-colore-instagram: #8a3ab9;
+
+//------------------------------------------
+//	
+//	Animazioni
+//	
+//
+
+$i-duration-veloce: .2s;
+$i-duration: .4s;
+$i-duration-lenta: .8s;
+$i-duration-x-lenta: 1.2s;
+
+//------------------------------------------
+//	
+//	Layout
+//	
+//
+
+//	spazi default
+$i-spazio-verticale: 10px;	//	da bs
+$i-spazio-orizzontale:10px;	//	da bs
+
+//	z-index
+$i-z-index: (
+	'primo-piano',
+	'modale',
+	'nascosto'
+);

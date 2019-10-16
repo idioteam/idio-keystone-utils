@@ -1,0 +1,46 @@
+//	Ritmo Verticale
+$sgl-debug-mode: false;
+$sgl-extras: true;
+
+$sgl-base-font-size: $font-size-base / 1px;
+$sgl-base-line-height: $line-height-base;
+
+//$sgl-scale-factor:$PERFECT_FOURTH;
+
+html {
+  @include sgl-html();
+}
+
+body {
+  @include sgl-body("em");
+  font-family:$i-font-family;
+}
+
+h1 {
+  @include sgl-heading(3, "em");
+  font-family:$i-heading-font-family;
+}
+
+h2 {
+  @include sgl-heading(2, "em");
+  font-family:$i-heading-font-family;
+}
+
+h3 {
+  @include sgl-heading(1, "em");
+  font-family:$i-heading-font-family;
+}
+
+h4, h5, h6 {
+  @include sgl-heading(0);
+  font-family:$i-heading-font-family;
+}
+
+p,
+ul,
+ol,
+pre,
+table,
+blockquote {
+  @include sgl-margins();
+}

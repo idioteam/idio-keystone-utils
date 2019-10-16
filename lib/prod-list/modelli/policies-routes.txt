@@ -1,0 +1,2 @@
+app.get('/privacy-policy', routes.policies.policies.privacy);
+app.get('/cookie-policy', routes.policies.policies.cookies);

@@ -1,0 +1,5 @@
+	app.get('/sitemap.xml', function(req,res){
+		sitemap.create(keystone, req, res,{
+			ignore: ['^\/api.*$','\/privacy-policy','\/cookie-policy']
+		});
+	});

@@ -1,0 +1,23 @@
+//	Mixins elementi che conservano la proporzione
+//	=============================================
+
+//	NB: gli elmenti figli dell'elemento cui è applicato il mixin
+//	devo essere posizionati in maniera assoluta
+@mixin ratio-box (
+  $ratio: 1/1
+) {
+
+  overflow: hidden;
+  position: relative;
+
+  // The container's height, as a percentage of the
+  // container's width, is set by assigning
+  // padding-top to a pseudo-element.
+  &:before {
+	content: "";
+	display: block;
+	height: 0;
+	padding-top: (1 / $ratio) * 100%;
+  }
+
+}

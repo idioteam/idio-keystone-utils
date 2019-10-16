@@ -1,0 +1,167 @@
+//-  Created by Mat on 09/10/2015.
+//-	https://builtvisible.com/micro-data-schema-org-guide-generating-rich-snippets
+//-	Una serie di mixin per schema.org
+//- Attualmente realizzati
+//-		Website
+//-		Organization
+//-		Address
+//-		News
+//-		Event
+
+//-
+//-	Website
+//-
+mixin schemaWebsite(schema)
+	script(type='application/ld+json')
+		| {
+		+schemaContext()
+		+schemaType('WebSite')
+		+schemaField('name', schema.name)
+		+schemaField('url', schema.url, '')
+		| }
+//-	
+//-	Organization
+//-
+mixin schemaOrganization(schema)
+	script(type='application/ld+json')
+		+schemaOrganizationRender(schema)
+		
+mixin schemaOrganizationRender(schema)
+
+	| {
+	+schemaContext()
+	+schemaType('Organization')
+	+schemaField('name', schema.name)
+	//-+schemaField('logo', schema.logo)
+	| "logo" :
+	+schemaImage(schema.logo)
+	| ,
+	+schemaField('url', schema.url)
+	+schemaField('email', schema.email)
+	+schemaField('telephone', schema.telefono)
+	+schemaField('faxNumber', schema.fax)
+	if( schema.address )
+		|"address" :
+		+schemaAddressRender(schema.address)
+	if(schema.sameAs)
+		|		,"sameAs" : [
+		each item, index in schema.sameAs
+			|"#{item}"#{index==schema.sameAs.length-1 ? '' : ','}
+		|]
+	| }
+//-
+//-	ImageObject
+//-
+mixin schemaImage(image)
+	| {
+	+schemaType('ImageObject')
+	+schemaField('url', image.url, '')
+	if image.width
+		| ,
+		+schemaField('width', image.width, '')
+	if image.height
+		| ,
+		+schemaField('height', image.height, '')
+	| }
+//-
+//-	Address
+//-
+mixin schemaAddress(schema)
+	script(type='application/ld+json')
+		+schemaAddressRender(schema)
+
+mixin schemaAddressRender(schema)
+	| {
+	+schemaContext()
+	+schemaType('PostalAddress')
+	+schemaField('addressLocality', schema.comune)
+	+schemaField('addressCountry', schema.nazione)
+	+schemaField('postalCode', schema.cap)
+	+schemaField('streetAddress', schema.indirizzo, '')
+	| }
+//-
+//-	News
+//-
+mixin schemaNews(schema)
+	script(type='application/ld+json')
+		+schemaNewsRender(schema)
+
+mixin schemaNewsRender(schema)
+	| {
+	+schemaContext()
+	+schemaType('NewsArticle')
+	+schemaField('datePublished',schema.datePublished)
+	+schemaField('headline',schema.headline)
+	+schemaField('description',schema.description)
+	//-+schemaField('image',schema.image)
+	| "image" :
+	+schemaImage(schema.image)
+	| ,
+	| "publisher" : 
+	+schemaOrganizationRender(schema.publisher)
+	| ,
+	+schemaField('author',schema.author, '')
+	| }
+//-
+//-	Event
+//-
+mixin schemaEvent(schema)
+	script(type='application/ld+json')
+		+schemaEventRender(schema)
+	script(type='application/ld+json')
+		+schemaOrganizationRender({
+			name: 'NSI Nier Soluzioni Informatiche S.r.l.',
+			url: 'http://www.nsi.it',
+			logo: 'http://www.nsi.it/nsi2012-theme/immagini/logo-nsi-og.png',
+			email: 'info@nsi.it',
+			telephone: '+39 051 0391000',
+			faxNumber: '+39 051 5880379',
+			sameAs: [
+				'https://www.linkedin.com/company/nsi_2',
+				'https://www.youtube.com/user/NSIsocial',
+				'https://www.facebook.com/pages/NSI-Nier-Soluzioni-Informatiche/400269446656743',
+				'https://twitter.com/NSI_Tweet',
+				'https://plus.google.com/108840574654281714686'
+			],
+			address: {
+				comune: 'Castelmaggiore',
+				cap: '40013',
+				indirizzo: 'Via Bonazzi, 2',
+				nazione: 'Italy'
+			}
+		})
+
+mixin schemaEventRender(schema)
+	| {
+	+schemaContext()
+	+schemaType('Event')
+	+schemaField('name',schema.name)
+	+schemaField('url',schema.url)
+	+schemaField('startDate',schema.startDate, '')
+	if schema.location
+		| , "location": 
+		+schemaLocationRender(schema.location)
+	| }
+//-
+//-	Location
+//-
+mixin schemaLocationRender(schema)
+	| {
+	+schemaType('Place')
+	+schemaField('name', schema.name)
+	+schemaField('address', schema.address)
+	+schemaField('photo', schema.photo, '')
+	| }
+//-
+//-	Schema field
+//-
+mixin schemaField(chiave, valore, noVirgola)
+	-noVirgola = (typeof(noVirgola)=== 'undefined') ? ', ' : ''
+	if( valore )
+	|	"#{chiave}" : "#{valore}" #{noVirgola}
+
+mixin schemaContext()
+	|	"@context" : "http://schema.org",
+
+mixin schemaType(tipo)
+	|	"@type" : "#{tipo}",

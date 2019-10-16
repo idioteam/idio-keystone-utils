@@ -1,0 +1,62 @@
+//	Mixins per la gestione della visibilità di un elemento
+//	======================================================
+
+@mixin hidden {
+  display: none;
+  visibility: hidden;
+}
+
+@mixin visible($state: 'block') {
+  display: unquote($state);
+  visibility: visible;
+}
+
+// Nasconde visivamente l'elemento, ma rimane visibile agli screenreader
+@mixin vh($focusable: false) {
+  border: 0;
+  clip: rect(0 0 0 0);
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  padding: 0;
+  position: absolute;
+  width: 1px;
+
+  @if $focusable {
+	@include vh-focusable;
+  }
+}
+
+@mixin vh-reset {
+  clip: auto;
+  height: auto;
+  margin: 0;
+  overflow: visible;
+  position: static;
+  width: auto;
+}
+
+// Consente all'elemento di ottenere il focuss quando si naviga con la tastiera
+@mixin vh-focusable {
+
+  &:active,
+  &:focus {
+	clip: auto;
+	height: auto;
+	margin: 0;
+	overflow: visible;
+	position: static;
+	width: auto;
+  }
+}
+
+// Nasconde l'elemento anche agli screenreader, ma mantiene lo spazio occupato nel layout
+@mixin invisible {
+  visibility: hidden;
+}
+
+@mixin opacity($opacity) {
+  opacity: $opacity;
+  $opacity-ie: $opacity * 100;
+  filter: alpha(opacity=$opacity-ie); //IE8
+}

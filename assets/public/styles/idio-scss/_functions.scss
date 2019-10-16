@@ -1,0 +1,8 @@
+@function z($name) {
+    @if index($i-z-index, $name) {
+        @return (length($i-z-index) - index($i-z-index, $name)) + 1;
+    } @else {
+        @warn 'Elemento "#{$name}" non presente nella lista: #{$i-z-index}';
+        @return null;
+    }
+}

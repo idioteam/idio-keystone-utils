@@ -1,0 +1,168 @@
+//	Mixins per il posizionamento e la centratura
+//	============================================
+
+//	Allineamento verticale
+//	======================
+
+//	Metodo pseudo element ghost
+//	----------------------------
+//	$inner consente di specificare 
+// 	il nome della classe da assegnare 
+// 	all'elemento interno (default: '.vcenter-ghost')
+@mixin vcenter-ghost (
+  $inner...
+) {
+  //	L'elemento interno viene centrato verticalmente
+  //	tramite la proprietà vertical-align:middle
+  //	rispetto uno pseudo elemento 
+  // 	settato ad una altezza pari al 100% del genitore
+  &:before {
+	content: "";
+	height: 100%;
+	display: inline-block;
+	vertical-align: middle;
+	//	Margine destro negativo
+	//	per preservare il word-spacing
+	margin-right: -0.25em;
+  }
+
+  $inner: if(length($inner) == 0, ".vcenter-ghost-inner", $inner);
+  @each $cell-selector in $inner {
+	$cell-selector: unquote($cell-selector);
+	& > #{$cell-selector} {
+	  display: inline-block;
+	  vertical-align: middle;
+	  //  Se gli elementi centrati verticalmente 
+	  // raggiungono il 100% di width 
+	  // possono essere visualizzati in maniera errata
+	  width:99.9%;
+	}
+  }
+
+}
+
+//	Metodo line-height
+//	------------------
+//	$height indica la dimensione da assegnare 
+// 	all'altezza dell'elemento
+//	ed al line-height
+@mixin vcenter-lh (
+  $height
+) {
+  //	utilizzabile quando
+  //  il testo dell'elemento allineato verticalmente
+  // 	è su una sola riga
+  height: $height;
+  line-height: $height;
+
+}
+
+//	Metodo display table / table-cell
+//	---------------------------------
+//	$inner nome della classe 
+// 	cui assegnare display table-cell (default .td-inner)
+@mixin vcenter-td (
+  $inner...
+) {
+
+  display: table;
+
+  $inner: if(length($inner) == 0, ".vcenter-td-inner", $inner);
+  @each $cell-selector in $inner {
+	$cell-selector: unquote($cell-selector);
+	& > #{$cell-selector} {
+	  display: table-cell;
+	  vertical-align: middle;
+	}
+  }
+
+}
+
+
+//	Centratura di elementi con posizionamento assoluto
+//	==================================================
+
+//	Centratura orizzontale / verticale di un elemento assoluto
+//	----------------------------------------------------------
+//	$dimensions = larghezza altezza
+//	se specificata solo la larghezza centra l'elemento orizzontalmente
+//	se specificata solo l'altezza centra l'elemento verticalmente
+//	se specificate entrambe centra l'elemento verticalmente e centralmente
+@mixin center-absolutely (
+  $dimensions
+) {
+
+  $width: nth($dimensions, 1);
+  $height: nth($dimensions, 2);
+
+  position: absolute;
+
+  @if $width != null {
+	width: $width;
+	left: 50%;
+	margin-left: (-$width / 2);
+  }
+
+  @if $height != null {
+	height: $height;
+	top: 50%;
+	margin-top: (-$height / 2);
+  }
+
+}
+
+//	Centra elemento impostando margini auto
+//	---------------------------------------
+//	$max-width consente di impostare la larghezza massima
+@mixin center-block (
+  $max-width: false
+) {
+
+  margin-left: auto;
+  margin-right: auto;
+  @if $max-width {
+	max-width: $max-width;
+  }
+
+}
+
+//	Centra elemento mediante traslazione
+//	------------------------------------
+//	$axis = tipo di traslazione
+//	se omesso centra verticalmente ed orizzontalmente
+//	se x centra orizzontalmente
+//	se y centra verticalmente
+@mixin center-transform (
+  $axis: false
+) {
+
+  position: absolute;
+
+  @if $axis != x {
+	top: 50%;
+	margin-top: auto;
+	margin-bottom: auto;
+  }
+
+  @if $axis != y {
+	left: 50%;
+	margin-left: auto;
+	margin-right: auto;
+  }
+
+  $translate-val: null;
+
+  @if not($axis) {
+	$translate-val: translate(-50%, -50%);
+  }
+  @else if $axis != x {
+	$translate-val: translateY(-50%);
+  }
+  @else if $axis != y {
+	$translate-val: translateX(-50%);
+  }
+
+  -webkit-transform: $translate-val;
+  -ms-transform: $translate-val;
+  transform: $translate-val;
+}

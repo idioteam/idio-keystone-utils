@@ -1,0 +1,13 @@
+//	Mixins integrativi per vertical rhythm
+//	======================================
+
+//	Aggiunge padding ad un elemento di altezza nota per renderlo coerente col ritmo verticale
+@mixin pad-vr($height, $border-top-width: 0, $border-bottom-width: 0, $font-size: $i-font-size, $line-height: $i-line-height){
+
+  $lh: $font-size * $line-height;
+  $height: $height + $border-top-width + $border-bottom-width;
+  $pad: ( ceil( $height / $lh ) * $lh - $height ) / 2;
+
+  @include padding-v( $pad / $font-size * 1em );
+
+}

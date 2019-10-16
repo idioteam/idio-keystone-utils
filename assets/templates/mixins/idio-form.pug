@@ -1,0 +1,62 @@
+//-  Created by Mat on 06/07/2016.
+mixin campo(campo, layout)
+	//-	Campo
+	//-	label: testo dell'etichetta - obbligatorio
+	//-	id: id del campo, se non esiste viene usato label
+	//-	name: name del campo, se non esiste viene usato id oppure label
+	//-	type: type del campo, se non esiste viene impostato 'text'
+	//-	placeholder: testo da usare come placeholder
+	//-	classe: classi da assegnare al campo
+	-campo.lbl = campo.label ? campo.label.toLowerCase() : '';
+	-campo.type = campo.type || 'text';
+	-campo.id = (campo.id || campo.label.replace(/\s/g, '-').toLowerCase());
+	-layout = (typeof(layout)=== 'undefined') ? 'layout-default' : 'layout-'+layout
+
+	+#{layout}(campo)
+
+mixin renderLabel(campo)
+	//-	Crea label
+	if campo.label
+		label(for=campo.id || campo.lbl style=campo.style) #{campo.label}
+
+mixin renderCampo(campo)
+	//-	Crea campo
+	if campo.type == 'select'
+		select.form-control(name=campo.name || campo.id || campo.lbl id=campo.id || campo.lbl class=campo.classe)
+			+select(campo.opzioni)
+	else if campo.type == 'textarea'
+		textarea.form-control(style='overflow:hidden' rows='5' name=campo.name || campo.id || campo.lbl id=campo.id || campo.lbl placeholder=campo.placeholder || 'Inserire ' + campo.lbl class=campo.classe)
+	else
+		if campo.type == 'radio' || campo.type == 'checkbox'
+			input(name=campo.name || campo.id || campo.lbl id=campo.id || campo.lbl type=campo.type class=campo.classe value=campo.value)
+		else
+			input.form-control(name=campo.name || campo.id || campo.lbl id=campo.id || campo.lbl type=campo.type placeholder=campo.placeholder || 'Inserire ' + campo.lbl class=campo.classe value=campo.value)
+
+mixin renderErrore(campo)
+	//-	Crea campo di errore
+	if campo.errore
+		span.errore.rosso(data-field=campo.id data-type=campo.type)= campo.errore || campo.label + ' non valido'
+
+mixin layout-default(campo)
+	+renderLabel(campo)
+	+renderCampo(campo)
+	+renderErrore(campo)
+
+mixin layout-row(campo)
+	.row
+		.col-md-2
+			-var lbl = campo;
+			-lbl.style = 'padding-top:15px';
+			+renderLabel(lbl)
+		.col-md-10
+			+renderCampo(campo)
+			+renderErrore(campo)
+
+mixin select(select)
+	//-	Select
+	//-	opzioni: lista di opzioni
+	each opzione in select
+		if( typeof opzione === 'object')
+			option(value=opzione.value)= opzione.key
+		else
+			option= opzione
